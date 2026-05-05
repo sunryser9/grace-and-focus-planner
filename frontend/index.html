@@ -9,8 +9,15 @@
       margin: 40px;
       max-width: 600px;
     }
-    label { display: block; margin: 10px 0; }
-    input, textarea { width: 100%; padding: 8px; margin: 4px 0; }
+    label {
+      display: block;
+      margin: 10px 0;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 8px;
+      margin: 4px 0;
+    }
   </style>
 </head>
 <body>
@@ -32,9 +39,28 @@
       <textarea name="avoid_distraction" rows="2"></textarea>
     </label>
 
-    <button type="button" onclick="alert('MVP frontend ready for backend!')">
-      Save Plan (frontend only)
+    <button type="button" onclick="savePlan()">
+      Save Plan
     </button>
   </form>
+
+  <script>
+    async function savePlan() {
+      const data = {
+        spiritual_goal: document.querySelector("[name='spiritual_goal']").value,
+        content_task: document.querySelector("[name='content_task']").value,
+        avoid_distraction: document.querySelector("[name='avoid_distraction']").value,
+      };
+
+      const res = await fetch("https://grace-and-focus-planner.onrender.com/planner/day", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = await res.json();
+      alert("Plan saved: " + result.status);
+    }
+  </script>
 </body>
 </html>
